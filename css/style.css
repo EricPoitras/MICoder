@@ -1,0 +1,23 @@
+.font-pri{
+    font-family: 'Roboto', sans-serif;
+}
+.font-sec{
+    font-family: 'Open Sans', sans-serif;
+}
+
+nav button{
+    width: 100px;
+}
+
+#section_landing{
+    height: 100vh;
+}
+
+#alert{
+    position: absolute;
+    top: -100px;
+}
+
+body{
+    padding-top: 75px;
+}

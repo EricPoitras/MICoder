@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+      
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
+      
+    <!--
+        font-family: 'Open Sans', sans-serif;
+        font-family: 'Roboto', sans-serif;
+    -->
+      
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+      
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/animate.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+
+    <title>MICoder</title>
+      
+    <!-- Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="js/chart.js"></script>
+      
+  </head>
+  <body>
+    <!-- As a heading -->
+    <nav class="navbar fixed-top navbar-dark bg-primary">
+      <span class="navbar-brand mb-0 h1 font-sec">MICoder</span>
+      <span class="ml-auto">
+        <button id="instructionbtn" type="button" class="m-1 d-inline btn btn-outline-light">Instructions</a> 
+        <button id="statbtn" type="button" class="m-1 d-inline btn btn-outline-light">Stats</a>
+        <button id="graphbtn" type="button" class="m-1 d-inline btn btn-outline-light">Graphs</a>
+        <button id="downloadbtn" type="button" class="m-1 d-inline btn btn-outline-light">Export</button>
+        <button id="refreshbtn" type="button" class="m-1 d-inline btn btn-outline-light">Refresh</button>
+      </span>
+    </nav>
+    <div class="container-fluid">
+        <div id="section_landing" class="row justify-content-center align-items-center">
+            <div class="col-4">
+                <!-- Validation Area -->
+                <div id="alert" class="d-none alert alert-warning alert-dismissible fade show" role="alert">
+                  <strong>Oops!</strong> Don't forget to write a sample talk turn.
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <!-- Input Area-->
+                <div style="position:relative;top:-100px;" class="card">
+                  <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Talk turn:</label>
+                            <a id="pastebtn" href="#" class="float-right">Paste from clipboard</a>
+                            <textarea class="form-control" id="textinput" rows="3" placeholder="Write a sample utterance, e.g., It sounds like you are making an effort to change your behavior."></textarea>
+                        </div> 
+                        <label for="exampleRadios1">Speaker:</label>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="radio_buttons" id="radio_1" value="option1" checked>
+                          <label class="form-check-label" for="radio_1">
+                            Therapist
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="radio_buttons" id="radio_2" value="option2">
+                          <label class="form-check-label" for="radio_2">
+                            Client
+                          </label>
+                        </div>
+                        <button id="submitbtn" type="button" class="btn btn-primary mt-3">Code MI Behavior</button>
+                    </form>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div id="section_export" class="row justify-content-center">
+            <div class="col-5">
+                <div class="card">
+                    <div class="card-header">
+                        Output MISC Code Labels
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="MISCCodeLabel">MISC Code Labels</label>
+                            <textarea class="form-control" id="MISCCodeLabel" rows="3"></textarea>
+                            <button id="copylabelbtn" type="button" class="btn btn-outline-primary mt-3">Copy to Clipboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="card">
+                    <div class="card-header">
+                        Output MISC Code Probabilities
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="MISCCodeProb">MISC Code Probabilities</label>
+                            <textarea class="form-control" id="MISCCodeProb" rows="3"></textarea>
+                            <button id="copydatabtn" type="button" class="btn btn-outline-primary mt-3">Copy to Clipboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="section_utterance" class="row justify-content-center">
+            <div class="col-3 p-3">
+                <div class="card">
+                  <div class="card-header">
+                    Best Guess
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">DSF: <span id="DSF_best"></span></li>
+                    <li class="list-group-item">RNN: <span id="RNN_best"></span></li>
+                  </ul>
+                </div>
+            </div>
+            <div class="col-7 p-3">
+                <div class="card">
+                  <div class="card-header">
+                    Talk Turn
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Utterance: <span id="Utterance"></span></li>
+                    <li class="list-group-item">Speaker: <span id="Speaker"></span></li>
+                  </ul>
+                </div>
+            </div>
+        </div>
+        <div id="section_stats_client" class="row justify-content-center">
+            <div class="col-5 p-3">
+                <div class="card">
+                    <div class="card-header">
+                    Client Codes - DSF
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                          <thead>
+                            <tr>
+                              <th scope="col">MISC Codes</th>
+                              <th scope="col">Probabilies</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Change Talk</td>
+                              <td><span id="DSF_changetalk"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Sustain Talk</td>
+                              <td><span id="DSF_sustain"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Follow/Neutral</td>
+                              <td><span id="DSF_neutral"></span></td>
+                            </tr>
+                            <!--
+                            <tr>
+                              <td>Advise Without Permission</td>
+                              <td><span id="DSF_Advise_wop"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Facilitate</td>
+                              <td><span id="DSF_facilitate"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Advise With Permission</td>
+                              <td><span id="DSF_advise_wp"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Reflection Complex</td>
+                              <td><span id="DSF_reflection_complex"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Confront</td>
+                              <td><span id="DSF_confront"></span></td>
+                            </tr>
+                            <tr>
+                              <td>N/A Other</td>
+                              <td><span id="DSF_na_other"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Closed Question</td>
+                              <td><span id="DSF_question_closed"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Structure</td>
+                              <td><span id="DSF_structure"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Reflection Simple</td>
+                              <td><span id="DSF_reflection_simple"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Affirm</td>
+                              <td><span id="DSF_affirm"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Giving Information</td>
+                              <td><span id="DSF_givinginfo"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Open Question</td>
+                              <td><span id="DSF_question_open"></span></td>
+                            </tr>
+                            -->
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5 p-3">
+                <div class="card">
+                    <div class="card-header">
+                    Client Codes - RNN
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                          <thead>
+                            <tr>
+                              <th scope="col">MISC Codes</th>
+                              <th scope="col">Probabilies</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Change Talk</td>
+                              <td><span id="RNN_changetalk"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Sustain Talk</td>
+                              <td><span id="RNN_sustain"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Follow/Neutral</td>
+                              <td><span id="RNN_neutral"></span></td>
+                            </tr>
+                            <!--
+                            <tr>
+                              <td>Advise Without Permission</td>
+                              <td><span id="RNN_Advise_wop"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Facilitate</td>
+                              <td><span id="RNN_facilitate"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Advise With Permission</td>
+                              <td><span id="RNN_advise_wp"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Complex Reflection</td>
+                              <td><span id="RNN_reflection_complex"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Confront</td>
+                              <td><span id="RNN_confront"></span></td>
+                            </tr>
+                            <tr>
+                              <td>N/A Other</td>
+                              <td><span id="RNN_na_other"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Closed Question</td>
+                              <td><span id="RNN_question_closed"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Structure</td>
+                              <td><span id="RNN_structure"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Simple Reflection</td>
+                              <td><span id="RNN_reflection_simple"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Affirm</td>
+                              <td><span id="RNN_affirm"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Giving Information</td>
+                              <td><span id="RNN_givinginfo"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Open Question</td>
+                              <td><span id="RNN_question_open"></span></td>
+                            </tr>
+                            -->
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="section_stats_therapist" class="row justify-content-center">
+            <div class="col-5 p-3">
+                <div class="card">
+                    <div class="card-header">
+                    Clinician Codes - DSF
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                          <thead>
+                            <tr>
+                              <th scope="col">MISC Codes</th>
+                              <th scope="col">Probabilies</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Open Question</td>
+                              <td><span id="DSF_question_open"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Closed Question</td>
+                              <td><span id="DSF_question_closed"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Complex Reflection</td>
+                              <td><span id="DSF_reflection_complex"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Simple Reflection</td>
+                              <td><span id="DSF_reflection_simple"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Affirm</td>
+                              <td><span id="DSF_affirm"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Advise With Permission</td>
+                              <td><span id="DSF_advise_wp"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Advise Without Permission</td>
+                              <td><span id="DSF_Advise_wop"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Confront</td>
+                              <td><span id="DSF_confront"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Giving Information</td>
+                              <td><span id="DSF_givinginfo"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Facilitate</td>
+                              <td><span id="DSF_facilitate"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Structure</td>
+                              <td><span id="DSF_structure"></span></td>
+                            </tr>
+                            <tr>
+                              <td>N/A Other</td>
+                              <td><span id="DSF_na_other"></span></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5 p-3">
+                <div class="card">
+                    <div class="card-header">
+                    Clinician Codes - RNN
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                          <thead>
+                            <tr>
+                              <th scope="col">MISC Codes</th>
+                              <th scope="col">Probabilies</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Open Question</td>
+                              <td><span id="RNN_question_open"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Closed Question</td>
+                              <td><span id="RNN_question_closed"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Complex Reflection</td>
+                              <td><span id="RNN_reflection_complex"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Simple Reflection</td>
+                              <td><span id="RNN_reflection_simple"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Affirm</td>
+                              <td><span id="RNN_affirm"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Advise With Permission</td>
+                              <td><span id="RNN_advise_wp"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Advise Without Permission</td>
+                              <td><span id="RNN_Advise_wop"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Confront</td>
+                              <td><span id="RNN_confront"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Giving Information</td>
+                              <td><span id="RNN_givinginfo"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Facilitate</td>
+                              <td><span id="RNN_facilitate"></span></td>
+                            </tr>
+                            <tr>
+                              <td>Structure</td>
+                              <td><span id="RNN_structure"></span></td>
+                            </tr>
+                            <tr>
+                              <td>N/A Other</td>
+                              <td><span id="RNN_na_other"></span></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="section_graph_client" class="row justify-content-center">
+            <div class="col-auto p-3">
+                <!-- Graph Area -->
+                <div class="card">
+                    <div class="card-header">
+                        Client Codes
+                    </div>
+                    <div class="card-body">
+                        <div id="columnchart_material" style="height: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="section_graph_therapist" class="row justify-content-center">
+            <div class="col-auto p-3">
+                <!-- Graph Area -->
+                <div class="card">
+                    <div class="card-header">
+                        Therapist Codes
+                    </div>
+                    <div class="card-body">
+                        <div id="columnchart_material2" style="height: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="section_instructions" class="row">
+            <div class="col">
+                Coming soon... Under Construction.
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+      
+    <script src="js/elements.js"></script>
+    <script src="js/variables.js"></script>
+    <script src="js/views.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/CodeUtterances.js"></script>
+      
+    <script>
+        $(document).ready(function(){
+           view_controller("landing"); 
+        });  
+    </script>
+    
+  </body>
+</html>
