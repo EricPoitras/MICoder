@@ -35,6 +35,7 @@ function pasteResponse(){
     console.log("Pasted text from clipboard..."+textinput.innerText);
 }
 function scoreResponse(){
+    submitbtn.disabled = true;
     if(textinput.value != "" && textinput.value != "Write a sample utterance, e.g., It sounds like you are making an effort to change your behavior."){
         if(radio_1.checked == true){
             console.log("API speaker set to therapist");
@@ -43,12 +44,29 @@ function scoreResponse(){
             console.log("API speaker set to client");
             CodeUtterances.codeClient();
         }else{
-            console.log("Error...no radio button options selected.")
+            console.log("Error...no radio button options selected.");
+            alert_area.insertAdjacentHTML('beforeend',`
+        <div id="alert" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Error:</strong> Select either therapist or client for the utterance options.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        `);
         }
     }else{
         console.log("Error...null value detected at textarea input.")
-        alertmessage.classList.remove("d-none");
+        //alertmessage.classList.remove("d-none");
+        alert_area.insertAdjacentHTML('beforeend',`
+        <div id="alert" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Error:</strong> Write a new utterance in the textarea.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        `);
     }
+    submitbtn.disabled = false;
 }
 
 function downloadCSV(){

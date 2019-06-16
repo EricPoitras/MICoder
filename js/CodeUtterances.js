@@ -101,6 +101,8 @@ CodeUtterances = {
         docurl = document.URL;
         console.log(utterrnn);
         console.log(utterdsf);
+        view_controller("export");
+        downloadCSV();
         /*$.post("http://localhost/KentEllsworthMAThesisFall2018MITutorFeedbackStudy/NIHdepthlabfall2018Corrective/admin/apilog.php",{logtimestamp: n, logwebpage: docurl, session: sessionStorage.sessionid, username: sessionStorage.username, logutterrnn: JSON.stringify(utterrnn), logutterdsf: JSON.stringify(utterdsf)});*/
     },
     renderCorrectionPossibilities:function(utterance){
@@ -173,6 +175,14 @@ CodeUtterances = {
         var mypopup = $("#alertpopup");
         mypopup.popup( "open" );*/
         console.log(text);
+        alert_area.insertAdjacentHTML('beforeend',`
+        <div id="alert" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Server Error:</strong> ${text}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        `);
     },
     formatDate:function(date){
         if(date==null)return "";

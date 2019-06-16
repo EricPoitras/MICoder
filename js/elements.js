@@ -39,3 +39,5 @@ var section_stats_therapist = document.getElementById("section_stats_therapist")
 var section_graph_client = document.getElementById("section_graph_client");
 var section_graph_therapist = document.getElementById("section_graph_therapist");
 var section_instructions = document.getElementById("section_instructions");
+
+var alert_area = document.getElementById("alert_area");

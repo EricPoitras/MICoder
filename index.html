@@ -35,16 +35,16 @@
     <nav class="navbar fixed-top navbar-dark bg-primary">
       <span class="navbar-brand mb-0 h1 font-sec">MICoder</span>
       <span class="ml-auto">
-        <button id="instructionbtn" type="button" class="m-1 d-inline btn btn-outline-light">Instructions</a> 
-        <button id="statbtn" type="button" class="m-1 d-inline btn btn-outline-light">Stats</a>
-        <button id="graphbtn" type="button" class="m-1 d-inline btn btn-outline-light">Graphs</a>
-        <button id="downloadbtn" type="button" class="m-1 d-inline btn btn-outline-light">Export</button>
-        <button id="refreshbtn" type="button" class="m-1 d-inline btn btn-outline-light">Refresh</button>
+        <button id="instructionbtn" type="button" class="m-1 d-none btn btn-outline-light">Instructions</a> 
+        <button id="statbtn" type="button" class="m-1 d-none btn btn-outline-light">Stats</a>
+        <button id="graphbtn" type="button" class="m-1 d-none btn btn-outline-light">Graphs</a>
+        <button id="downloadbtn" type="button" class="m-1 d-none btn btn-outline-light">Export</button>
+        <button id="refreshbtn" type="button" class="m-1 d-none btn btn-outline-light">Refresh</button>
       </span>
     </nav>
     <div class="container-fluid">
         <div id="section_landing" class="row justify-content-center align-items-center">
-            <div class="col-4">
+            <div id="alert_area" class="col-4">
                 <!-- Validation Area -->
                 <div id="alert" class="d-none alert alert-warning alert-dismissible fade show" role="alert">
                   <strong>Oops!</strong> Don't forget to write a sample talk turn.
@@ -53,7 +53,7 @@
                   </button>
                 </div>
                 <!-- Input Area-->
-                <div style="position:relative;top:-100px;" class="card">
+                <div style="position:relative;top:-100px;" class="card w-100">
                   <div class="card-body">
                     <form>
                         <div class="form-group">
@@ -462,7 +462,14 @@
         </div>
         <div id="section_instructions" class="row">
             <div class="col">
-                Coming soon... Under Construction.
+                <h6>NLP Model for Coding Motivational Interviewing</h6>
+                <p>Details regarding the development and evaluation of the API can be found <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4842096/" target="_blank">here</a>.</p>
+                <p>Tanana, M., Hallgren, K. A., Imel, Z. E., Atkins, D. C., & Srikumar, V. (2016). A Comparison of Natural Language Processing Methods for Automated Coding of Motivational Interviewing. Journal of substance abuse treatment, 65, 43–50. doi:10.1016/j.jsat.2016.01.006</p>
+                <p>The following is a description of both models directly quoted from the technical description available in the supplementary materials.</p>
+                <h6>Discrete Sentence Feature (DSF) Model</h6>
+                <p>As described in the main paper, the DSF model utilized N-grams (unigrams, bigrams, and trigrams) and discrete features from the dependency parse tree. These features were represented as binary indicators (1’s and 0’s) as input into multinomial prediction models to show the presence or absence of different words or word relationships. For example, for the dependency relationship “I (nominal subject of) like”, we would use a features nsubj(I,like), nsubj:gov:I and nsubj:dep:like. So there would be one feature for the relationship, one feature for the governor of the relationship, and one feature for the dependent of the relationship. Stop words (e.g., “I”, ”the”, “a”, “hmm”) were included in all models.</p>
+                <h6>Recursive Neural Network (RNN) Model</h6>
+                <p>A standard discrete feature model captures particular vocabulary usage (and short, 2-3 word phrases) as well as grammar, through the dependency parse tree. However, the DSF does not incorporate a continuous representation of language into the model. For example, the idea that the training data learns something about the phrase “I had a terrible day” should inform a new, unseen phrase “I had a horrible day.” To the discrete model, “horrible” and “terrible” are two words that are as dissimilar as any other two words. For a recursive neural network, because the inputs are continuous word vectors (that have been trained on other large datasets), the words “horrible” and “terrible” are much more similar that “horrible” and a random word. The RNN model, when combining word vectors from each edge of the dependency parse tree, would use a separate matrix specific to the relationship of the two words. For example, for the relationship nsubj(I,like) the word vectors for “I” and “like” would be multiplied through a matrix specific to “nsubj”. Likewise, for the relationship dobj(stop, drinking), the 50 dimensional word vectors for “stop” and “drinking” would be multiplied through a matrix specific to “dobj” and result in a new matrix that is also 50 dimensional. The resultant vectors were then summed together, elementwise, with each of the other dependency relationships and transformed through a nonlinear hypertangent function so the final sentence representation would only contain values between -1 and +1. <br><br>In Recursive Neural Networks, word vectors can be thought of as model parameters. Word vectors can either be pre-trained on outside data or allowed to learn from model errors. In our reported RNN model, we allowed the word vectors to continue learning beyond their initial pre-training obtained from the Stanford GloVe Project. </p>
             </div>
         </div>
     </div>
