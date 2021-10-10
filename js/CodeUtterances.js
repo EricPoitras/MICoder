@@ -14,7 +14,7 @@ WebConstants = {
 // Eric: Modified the currServer and currFile by adding absolute url address
 CodeUtterances = {
     linechart:null,
-    currServer: "https://cors-anywhere.herokuapp.com/https://sri.utah.edu/psychtest/",
+    currServer: "https://cors-anywhere.herokuapp.com/ENDPOINT",
     currFile: "modeltestdepth.jsp",
     currentData:{},
 
