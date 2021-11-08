@@ -14,7 +14,7 @@ WebConstants = {
 // Eric: Modified the currServer and currFile by adding absolute url address; previously using https://cors-anywhere.herokuapp.com/ as proxy
 CodeUtterances = {
     linechart:null,
-    currServer: "https://thingproxy.freeboard.io/fetch/http://airation.trivergia.com:8080/psychtest/", 
+    currServer: "https://cors-anywhere.herokuapp.com/http://airation.trivergia.com:8080/psychtest/", 
     currFile: "modeltestdepth.jsp",
     currentData:{},
 
